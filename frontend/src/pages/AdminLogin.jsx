@@ -1,14 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react'
+import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
-import { useHospitalAuthContext } from '../hooks/useHospitalAuthContext';
 
-function HospitalLogin() {
-
-  const [email, setEmail] = useState('');
+function AdminLogin() {
+    const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate()
-  const {dispatch} = useHospitalAuthContext();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,7 +15,7 @@ function HospitalLogin() {
     // console.log('Email:', email);
     // console.log('Password:', password);
 
-    const response = await fetch('http://localhost:3000/api/hospital/login', {
+    const response = await fetch('http://localhost:3000/api/admin/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -31,11 +29,11 @@ function HospitalLogin() {
       // Handle successful login
     //   console.log('Login successful:', json);
       toast.success('Successfully loggedin!');
-      localStorage.setItem("hospital",JSON.stringify(json));
-      dispatch({type:'LOGIN', payload:json})
+      localStorage.setItem("admin",JSON.stringify(json));
       setEmail('')
       setPassword('')
-      navigate('/')
+      navigate('/dashboard')
+      
     } else {
       // Handle login error
     //   console.error('Login error:', json.msg);
@@ -43,11 +41,10 @@ function HospitalLogin() {
     }
   };
 
-
   return (
     <div className="flex justify-center items-center " style={{ height: "calc(100vh - 60px)" }}>
       <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md w-80">
-        <h2 className="text-2xl font-semibold mb-4 text-center">Hospital Login</h2>
+        <h2 className="text-2xl font-semibold mb-4 text-center">Admin Login</h2>
         <div className="mb-4">
           <label htmlFor="email" className="block text-gray-700 mb-2">
             Email:
@@ -80,11 +77,11 @@ function HospitalLogin() {
         >
           Login
         </button>
-        <p className='text-sm mt-4'>This page is for hospital usage only</p>
-        <Link className='text-blue-500 text-sm ' to={'/admin'}>Admin?</Link>
+        <p className='text-sm mt-4'>This page is for Admin usage only</p>
+        
       </form>
     </div>
   )
 }
 
-export default HospitalLogin
+export default AdminLogin

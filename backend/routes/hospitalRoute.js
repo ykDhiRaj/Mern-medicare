@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get("/",getHospitals);
 
-router.post("/signup",hospitalSignup);
+// router.post("/signup",hospitalSignup);
 
 router.post("/login",hospitalLogin);
 

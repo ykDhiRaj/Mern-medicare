@@ -10,6 +10,8 @@ import { useAuthContext } from "./hooks/useAuthContext";
 import { useHospitalAuthContext } from "./hooks/useHospitalAuthContext";
 import Appointments from "./pages/Appointments";
 import HospitalAppointment from "./pages/HospitalAppointment";
+import AdminLogin from "./pages/AdminLogin";
+import Dashboard from "./pages/Dashboard";
 
 
 function App() {
@@ -36,6 +38,10 @@ function App() {
       <Route path="/appointments" element={user? <Appointments/>:<Home/>}/>
 
       <Route path="/hospitalappoinments" element={<HospitalAppointment/>}/>
+
+      <Route path="/admin" element={<AdminLogin/>}/>
+
+      <Route path="/dashboard" element={<Dashboard/>}/>
 
 
      </Routes>
