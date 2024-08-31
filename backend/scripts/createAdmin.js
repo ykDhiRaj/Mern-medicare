@@ -14,8 +14,8 @@ mongoose.connect(process.env.URI).then(() => {
 });
 
 const createAdmin = async ()=>{
-    const fullname = "dhiraj"
-    const email = "dhiraj@mail.com"
+    const fullname = "demo"
+    const email = "demo@mail.com"
     const password = "12345"
 
     try {
