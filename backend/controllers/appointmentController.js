@@ -67,11 +67,16 @@ const deleteAppointmentrequest = async(req,res)=>{
 const updateAppointmentStatus = async (req,res)=>{
     const appointmentId = req.params.appid;
     const status = req.query.status; 
+    let expiresAt = null;
+
+    if (status === 'accepted') {
+        expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000); //24 hours
+      }
 
     try {
         const updatedAppointment = await Appointment.findByIdAndUpdate(
             appointmentId,
-            { status: status },
+            { status: status, expiresAt },
             { new: true }
         );
 

@@ -12,12 +12,16 @@ import Appointments from "./pages/Appointments";
 import HospitalAppointment from "./pages/HospitalAppointment";
 import AdminLogin from "./pages/AdminLogin";
 import Dashboard from "./pages/Dashboard";
+import HospitalRegister from "./pages/HospitalRegister";
+import HospitalList from "./pages/HospitalList";
+import { useAdminAuthContext } from "./hooks/useAdminAuthContext";
 
 
 function App() {
 
   const {user} = useAuthContext()
   const {hospital} = useHospitalAuthContext()
+  const {admin} = useAdminAuthContext()
  
   return (
     <>
@@ -41,7 +45,11 @@ function App() {
 
       <Route path="/admin" element={<AdminLogin/>}/>
 
-      <Route path="/dashboard" element={<Dashboard/>}/>
+      <Route path="/dashboard" element={admin?<Dashboard/>:<Home/>}/>
+
+      <Route path="/registerhospital" element={admin?<HospitalRegister/>:<Home/>}/>
+
+      <Route path="/allhospitals" element={admin?<HospitalList/>:<Home/>}/>
 
 
      </Routes>

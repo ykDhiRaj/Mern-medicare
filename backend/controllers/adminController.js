@@ -55,7 +55,21 @@ const hospitalSignup = async (req,res)=>{
     }
 }
 
+const deleteHospital = async(req,res) =>{
+    const id = req.params.id;
+
+    const deletedHospital = await Hospital.findByIdAndDelete(id);
+    
+    if(deletedHospital){
+        res.status(200).json(deletedHospital)
+    }else{
+        res.status(400).json({msg:"Something went wrong"})
+    }
+}
+
+
 module.exports = {
     adminLogin,
-    hospitalSignup
+    hospitalSignup,
+    deleteHospital
 }

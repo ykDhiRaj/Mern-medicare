@@ -2,11 +2,13 @@ import React from 'react'
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAdminAuthContext } from '../hooks/useAdminAuthContext';
 
 function AdminLogin() {
     const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate()
+  const {dispatch} =useAdminAuthContext()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,6 +32,7 @@ function AdminLogin() {
     //   console.log('Login successful:', json);
       toast.success('Successfully loggedin!');
       localStorage.setItem("admin",JSON.stringify(json));
+      dispatch({type:'LOGIN',payload:json})
       setEmail('')
       setPassword('')
       navigate('/dashboard')

@@ -2,12 +2,14 @@ import React from 'react'
 import {Link, useNavigate} from "react-router-dom"
 import { useAuthContext } from '../hooks/useAuthContext';
 import { useHospitalAuthContext } from '../hooks/useHospitalAuthContext';
+import { useAdminAuthContext } from '../hooks/useAdminAuthContext';
 
 
 function Navbar() {
     const navigate = useNavigate();
     const {user,dispatch} = useAuthContext()
     const {hospital,dispatch:hospitaldispatch} = useHospitalAuthContext()
+    const {admin} = useAdminAuthContext()
 
     const handleClick = (e)=>{
         e.preventDefault()
@@ -36,7 +38,7 @@ function Navbar() {
                 <h1 onClick={handleClick} className='text-blue-700 cursor-pointer'>MediCare</h1>
             </div>
             <div className="rightnav mr-10 flex gap-11 ">
-                {!hospital?<>
+                {!hospital && !admin?<>
                <Link className='font-thin hover:underline' to={'/hospitals'}>Hospitals</Link>
                 </>
                 :
@@ -49,9 +51,15 @@ function Navbar() {
                 <button onClick={handleLogout} className='bg-red-500 font-thin px-1 h-8 rounded-md text-lg hover:bg-red-600'>Logout</button>
                </>:
                <>
+               {!admin?<>
+               
                <Link className='font-thin hover:underline' to={'/login'}>Login</Link>
                <Link className='font-thin hover:underline' to={'/signup'}>Signup</Link>
                <Link className='font-thin hover:underline' to={'/loginhospital'}>For Hospital</Link>
+               </>:
+               <>
+                <Link className='font-thin hover:underline' to={'/dashboard'} >Dashboard</Link>
+               </>}
                
                </>
                

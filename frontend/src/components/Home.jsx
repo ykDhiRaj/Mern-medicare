@@ -1,11 +1,13 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useHospitalAuthContext } from "../hooks/useHospitalAuthContext";
+import { useAdminAuthContext } from "../hooks/useAdminAuthContext";
 
 
 function Home() {
 
   const {hospital} = useHospitalAuthContext()
+  const {admin} = useAdminAuthContext()
 
   const navigate = useNavigate();
   const handleClick = (e)=>{
@@ -19,7 +21,7 @@ function Home() {
           <div className="lefthome w-[50%] h-full p-[90px]">
             <h1 className="text-7xl font-semibold text-blue-700">Your Health is our Priority.</h1>
             <p className="mt-10">Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus veritatis cum esse nostrum, voluptatibus, officia eius ad libero voluptatem quos quam quasi debitis? Culpa ex ratione deleniti voluptatum temporibus dicta quis laborum, unde, cupiditate iusto aliquam eligendi deserunt vero eveniet hic omnis impedit. Soluta!</p>
-            {!hospital?<>
+            {!hospital && !admin?<>
             <button onClick={handleClick} className="bg-blue-500 p-5 rounded-md mt-10 text-white hover:scale-105 duration-300 hover:bg-blue-600">Book your appointment</button>
             </>:<></>}
           </div>
