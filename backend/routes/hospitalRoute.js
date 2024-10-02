@@ -5,8 +5,6 @@ const router = express.Router();
 
 router.get("/",getHospitals);
 
-// router.post("/signup",hospitalSignup);
-
 router.post("/login",hospitalLogin);
 
 module.exports = router;
