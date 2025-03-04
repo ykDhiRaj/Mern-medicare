@@ -6,7 +6,7 @@
 
 * {
   font-family: "Outfit", sans-serif;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 .link-hover {
   @apply hover:text-blue-500 transition-colors duration-300;

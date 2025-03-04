@@ -17,6 +17,22 @@ const signup = async (req,res) => {
     }
 }
 
+const getInsurances = async (req,res)=>{
+    try{
+        const response = await InsuranceCompany.find();
+
+        if(!response){
+            return new Error("Something went wrong");
+        }
+
+        res.send(response);
+    } catch(error){
+        res.send(error);
+    }
+
+}
+
 module.exports = {
-    signup
+    signup,
+    getInsurances
 }
