@@ -67,16 +67,20 @@ const deleteAppointmentrequest = async(req,res)=>{
 const updateAppointmentStatus = async (req,res)=>{
     const appointmentId = req.params.appid;
     const status = req.query.status; 
+    const { acceptedDate } = req.body; // Get acceptedDate from request body
     let expiresAt = null;
 
     if (status === 'accepted') {
-        expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000); //24 hours
-      }
+        if (!acceptedDate) {
+            return res.status(400).json({ msg: "Accepted date is required" });
+        }
+        expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000); // Expiration in 24 hours
+    }
 
     try {
         const updatedAppointment = await Appointment.findByIdAndUpdate(
             appointmentId,
-            { status: status, expiresAt },
+            { status, expiresAt, acceptedDate: status === 'accepted' ? acceptedDate : null },
             { new: true }
         );
 
@@ -88,6 +92,7 @@ const updateAppointmentStatus = async (req,res)=>{
     } catch (error) {
         res.status(400).json({ msg: error.message });
     }
+
 }
 
 

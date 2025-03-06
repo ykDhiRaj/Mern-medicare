@@ -7,7 +7,10 @@ const AppointmentSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-
+    acceptedDate:{
+      type:Date,
+      default:null
+    },
     hospital: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Hospital",

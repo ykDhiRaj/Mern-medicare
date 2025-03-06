@@ -5,6 +5,8 @@ import {toast} from "react-hot-toast"
 function HospitalAppointment() {
   const [appointments, setAppointments] = useState([]);
   const [error, setError] = useState(null);
+  const [selectedDates, setSelectedDates] = useState({}); // Store selected dates for each appointment
+
 
   const hospital = JSON.parse(localStorage.getItem('hospital'));
   const hospitalEmail = hospital?.email;
@@ -64,34 +66,39 @@ function HospitalAppointment() {
     }
   }
 
-  const handleAccept = async (appointmentId)=>{
-    try {
-      const response = await fetch(`http://localhost:3000/api/appointment/${appointmentId}/status?status=accepted`,{
-        method:'PUT',
-        headers:{
-          'Content-Type':'application/json',
-          'Authorization':`Bearer ${token}`
-        }
-      })
+  const handleAccept = async (appointmentId) => {
+    const acceptedDate = selectedDates[appointmentId]; // Get the selected date
 
-      if(response.ok){
-        toast.success("Status updated")
-        
-        setAppointments(appointments.map(appointment =>
-          appointment._id === appointmentId
-            ? { ...appointment, status: 'accepted' }
-            : appointment
-        ));
-      }
-
-      if (!response.ok) {
-        throw new Error('Failed to accept appointment');
-      }
-
-    } catch (error) {
-      setError(error.message);
+    if (!acceptedDate) {
+        toast.error("Please select a date for the appointment");
+        return;
     }
-  }
+
+    try {
+        const response = await fetch(`http://localhost:3000/api/appointment/${appointmentId}/status?status=accepted`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ acceptedDate }) // Send accepted date
+        });
+
+        if (response.ok) {
+            toast.success("Appointment accepted with date");
+            setAppointments(appointments.map(appointment =>
+                appointment._id === appointmentId
+                    ? { ...appointment, status: 'accepted', acceptedDate }
+                    : appointment
+            ));
+        } else {
+            throw new Error("Failed to accept appointment");
+        }
+    } catch (error) {
+        setError(error.message);
+    }
+};
+
 
   return (
     <div className="p-5">
@@ -103,6 +110,12 @@ function HospitalAppointment() {
             <h1 className="text-xl font-semibold text-blue-800">User: {appointment.user.fullname}</h1>
             <p className="mt-2 text-gray-600">Status: <span className={`font-medium ${appointment.status === 'accepted' ? 'text-green-500' : 'text-yellow-500'}`}>{appointment.status}</span></p>
             <p className="mt-2 text-gray-600">Requested: <span className="text-gray-500">{format(appointment.createdAt)}</span></p>
+            <input
+    type="date"
+    className="border p-2 rounded w-full"
+    value={selectedDates[appointment._id] || ""}
+    onChange={(e) => setSelectedDates({ ...selectedDates, [appointment._id]: e.target.value })}
+/>
             <div className="mt-6 flex justify-between">
               <button onClick={() => handleReject(appointment._id)} className="bg-red-600 text-white px-5 py-2 rounded-md shadow-md hover:bg-red-700 transition-colors">Reject</button>
               <button onClick={() => handleAccept(appointment._id)} className="bg-green-700 text-white px-5 py-2 rounded-md shadow-md hover:bg-green-800 transition-colors">Accept</button>
